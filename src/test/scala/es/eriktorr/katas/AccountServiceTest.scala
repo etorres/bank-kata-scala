@@ -6,14 +6,20 @@ import org.scalatest.{FlatSpec, Matchers}
 class AccountServiceTest extends FlatSpec with Matchers with MockFactory {
 
   "An account service" should "print all statements and balance in the reverse order of how they happened" in {
-    val accountService = new SimpleAccountService
+    val statementPrinter = mock[StatementPrinter]
 
+    val accountService = new SimpleAccountService
     accountService.deposit(1000)
     accountService.deposit(2000)
     accountService.withdraw(500)
     accountService.printStatement()
 
-
+    inSequence {
+      (statementPrinter.printLine _).expects("Date || Amount || Balance")
+      (statementPrinter.printLine _).expects("14/01/2012 || -500 || 2500")
+      (statementPrinter.printLine _).expects("13/01/2012 || 2000 || 3000")
+      (statementPrinter.printLine _).expects("10/01/2012 || 1000 || 1000")
+    }
   }
 
 }
