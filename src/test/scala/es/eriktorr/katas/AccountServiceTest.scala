@@ -21,6 +21,17 @@ class AccountServiceTest extends FlatSpec with Matchers with MockFactory {
     accountService.deposit(1000)
   }
 
+  "Account service" should "record a statement when a withdraw is made" in {
+    val clock = mock[Clock]
+    val statementRepository = mock[StatementRepository]
+
+    (clock.now _).expects().returning(DATE)
+    (statementRepository.save _).expects(new Statement(DATE, -500))
+
+    val accountService = new SimpleAccountService(clock, statementRepository)
+    accountService.withdraw(500)
+  }
+
   private def dateFrom(date: String): LocalDate = {
     LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"))
   }

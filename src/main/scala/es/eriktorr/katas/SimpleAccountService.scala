@@ -7,7 +7,9 @@ class SimpleAccountService(private val clock: Clock, private val statementReposi
     statementRepository.save(new Statement(clock.now, amount))
   }
 
-  override def withdraw(amount: Int): Unit = ???
+  override def withdraw(amount: Int): Unit = {
+    statementRepository.save(new Statement(clock.now, -amount))
+  }
 
   override def printStatement(): Unit = ???
 
