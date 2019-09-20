@@ -1,25 +1,28 @@
 package es.eriktorr.katas
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{FlatSpec, Matchers}
 
 class AccountServiceTest extends FlatSpec with Matchers with MockFactory {
 
-  "An account service" should "print all statements and balance in the reverse order of how they happened" in {
-    val statementPrinter = mock[StatementPrinter]
+  private val DATE: LocalDate = dateFrom("01/01/2020")
 
-    val accountService = new SimpleAccountService
+  "Account service" should "record a statement when a deposit is made" in {
+    val clock = mock[Clock]
+    val statementRepository = mock[StatementRepository]
+
+    (clock.now _).expects().returning(DATE)
+    (statementRepository.save _).expects(new Statement(DATE, 1000))
+
+    val accountService = new SimpleAccountService(clock, statementRepository)
     accountService.deposit(1000)
-    accountService.deposit(2000)
-    accountService.withdraw(500)
-    accountService.printStatement()
+  }
 
-    inSequence {
-      (statementPrinter.printLine _).expects("Date || Amount || Balance")
-      (statementPrinter.printLine _).expects("14/01/2012 || -500 || 2500")
-      (statementPrinter.printLine _).expects("13/01/2012 || 2000 || 3000")
-      (statementPrinter.printLine _).expects("10/01/2012 || 1000 || 1000")
-    }
+  private def dateFrom(date: String): LocalDate = {
+    LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"))
   }
 
 }

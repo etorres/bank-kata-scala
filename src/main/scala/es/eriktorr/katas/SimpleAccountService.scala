@@ -1,8 +1,11 @@
 package es.eriktorr.katas
 
-class SimpleAccountService extends AccountService {
+class SimpleAccountService(private val clock: Clock, private val statementRepository: StatementRepository)
+  extends AccountService {
 
-  override def deposit(amount: Int): Unit = ???
+  override def deposit(amount: Int): Unit = {
+    statementRepository.save(new Statement(clock.now, amount))
+  }
 
   override def withdraw(amount: Int): Unit = ???
 
