@@ -31,11 +31,12 @@ class AccountServiceTest extends FlatSpec with Matchers with OneInstancePerTest 
   }
 
   "Account service" should "print statements and balance" in {
-    (statementRepository.statements _).expects().returning(scala.collection.mutable.ArrayBuffer(
-      new Statement(dateFrom("10/01/2012"), 1000),
-      new Statement(dateFrom("13/01/2012"), 2000),
-      new Statement(dateFrom("14/01/2012"), -500)
-    ))
+    (statementRepository.snapshot _).expects().returning(
+      List(
+        new Statement(dateFrom("10/01/2012"), 1000),
+        new Statement(dateFrom("13/01/2012"), 2000),
+        new Statement(dateFrom("14/01/2012"), -500)
+      ), 2500)
 
     inSequence {
       (statementPrinter.printLine _).expects("Date || Amount || Balance")
