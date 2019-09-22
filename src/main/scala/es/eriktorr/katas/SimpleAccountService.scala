@@ -17,8 +17,8 @@ class SimpleAccountService(private val clock: Clock,
   }
 
   override def printStatement(): Unit = {
-    statementPrinter.printLine("Date || Amount || Balance")
     val snapshot = statementRepository.snapshot()
+    statementPrinter.printLine("Date || Amount || Balance")
     printStatementWithBalance(snapshot._1, snapshot._2)
   }
 
