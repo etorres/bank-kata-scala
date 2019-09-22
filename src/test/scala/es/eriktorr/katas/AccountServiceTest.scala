@@ -1,8 +1,8 @@
 package es.eriktorr.katas
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
+import es.eriktorr.katas.DateFormatter.dateFrom
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{FlatSpec, Matchers, OneInstancePerTest}
 
@@ -46,10 +46,6 @@ class AccountServiceTest extends FlatSpec with Matchers with OneInstancePerTest 
     }
 
     accountService.printStatement()
-  }
-
-  private def dateFrom(date: String): LocalDate = {
-    LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
   }
 
 }

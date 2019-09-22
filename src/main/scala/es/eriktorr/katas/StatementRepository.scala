@@ -15,7 +15,8 @@ class StatementRepository {
   }
 
   def save(statement: Statement): Unit = {
-
+    statements += statement
+    balance.add(statement.amount)
   }
 
 }

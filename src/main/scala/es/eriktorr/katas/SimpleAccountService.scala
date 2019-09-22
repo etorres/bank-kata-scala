@@ -1,6 +1,6 @@
 package es.eriktorr.katas
 
-import java.time.format.DateTimeFormatter
+import es.eriktorr.katas.DateFormatter.dateToString
 
 import scala.annotation.tailrec
 
@@ -33,8 +33,7 @@ class SimpleAccountService(private val clock: Clock,
   }
 
   private def lineFrom(statement: Statement, balance: Int): String = {
-    val dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-    s"${dateTimeFormatter.format(statement.date)} || ${statement.amount} || ${balance}"
+    s"${dateToString(statement.date)} || ${statement.amount} || ${balance}"
   }
 
 }
